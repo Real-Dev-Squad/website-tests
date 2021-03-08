@@ -1,0 +1,17 @@
+{
+  "name": "website-tests",
+  "version": "0.0.1",
+  "description": "Tests related to the apps across Real Dev Squad",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^3.3.4",
+    "puppeteer": "^8.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
