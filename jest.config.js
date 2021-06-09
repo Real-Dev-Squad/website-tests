@@ -1,4 +1,4 @@
 module.exports = {
-    testTimeout: 15000,
+    testTimeout: 30000,
     testPathIgnorePatterns: ["config"],
 };
