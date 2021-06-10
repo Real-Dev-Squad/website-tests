@@ -16,18 +16,12 @@ function delay(time) {
 beforeAll(async () => {
     browser = await puppeteer.launch({
         headless: false,
-        slowMo: 0,
+        slowMo: 100,
     });
 
     const context = await browser.createIncognitoBrowserContext();
 
     page = await context.newPage();
-    // await page.emulate(puppeteer.devices['iPhone 8']);
-    // await page.setViewport({
-    //   width: 1440,
-    //   height: 900,
-    //   deviceScaleFactor: 1,
-    // });
     return page;
 });
 
@@ -83,7 +77,6 @@ describe("New user sign up page works correctly", () => {
     });
 
     test("Incomplete user sees sign up page", async () => {
-        // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
         page.on("request", (request) => {
             if (
                 request.url().endsWith("/users/self") &&

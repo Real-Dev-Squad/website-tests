@@ -8,8 +8,8 @@ let browser, page;
 
 beforeAll(async () => {
     browser = await puppeteer.launch({
-        // headless: false,
-        // slowMo: 100,
+        headless: false,
+        slowMo: 100,
     });
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -26,11 +26,9 @@ describe("Click on Social Media Links", () => {
         const links = await page.$$eval("a.social-media-link", (list) =>
             list.map((elm) => elm.href)
         );
-        // console.log(links);
         for (const link of links) {
             const newPage = await browser.newPage();
             await newPage.goto(link);
-            // console.log("page found");
             if (link.includes("linkedin")) {
                 await newPage.screenshot({ path: "social-media/linkedin.png" });
                 expect(link).toMatch(/real-dev-squad/);
