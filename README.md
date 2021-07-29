@@ -2,7 +2,7 @@
 
 All the important tests that our website should contain.
 
-## Before runnig tests
+## Before running tests
 
 -   Testers will be needed to create a test github account in order run the SignIn tests successfully.
 -   We'll be using the npm package [config](https://www.npmjs.com/package/config). This package allows us to define a set of default parameters and extend them for different deployment environments.
