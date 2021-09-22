@@ -1,3 +1,3 @@
 const signupPageTitle = /Sign Up/;
 
-module.exports = signupPageTitle;
+module.exports = {signupPageTitle};
