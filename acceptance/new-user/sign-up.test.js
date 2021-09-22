@@ -22,7 +22,6 @@ beforeAll(async () => {
   });
 
   const context = await browser.createIncognitoBrowserContext();
-  // const browser = await puppeteer.launch();
 
   page = await context.newPage();
   return page;
