@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "config": "^3.3.6",
+    "expect-puppeteer": "^6.1.0",
     "puppeteer": "^10.2.0"
   },
   "devDependencies": {
