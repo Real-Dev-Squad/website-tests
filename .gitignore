@@ -1,4 +1,4 @@
 node_modules
 tmp
-local.json
+config/local.json
 social-media
