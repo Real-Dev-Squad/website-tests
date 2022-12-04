@@ -1,3 +1,6 @@
+
+import { afterAll, beforeAll, beforeEach, afterEach, describe, expect, test } from 'vitest'
+
 const puppeteer = require("puppeteer");
 const config = require("config");
 

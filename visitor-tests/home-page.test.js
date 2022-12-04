@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
+
 const puppeteer = require("puppeteer");
 
 const URLS = require("../constants/urls");
