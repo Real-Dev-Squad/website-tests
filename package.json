@@ -10,12 +10,10 @@
     "puppeteer": "^19.3.0"
   },
   "devDependencies": {
-    "jest": "^29.3.1",
     "vitest": "^0.25.3"
   },
   "scripts": {
-    "test": "jest",
-    "test-vitest": "vitest --run",
+    "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "test-watch": "vitest watch"
   },
