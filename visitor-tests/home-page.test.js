@@ -24,11 +24,6 @@ afterAll(async () => {
 
 test("Text checks", async () => {
   await page.goto(HOME_PAGE);
-  await page.waitForSelector(".main-banner");
-  const bannerText = await page.$eval(".notif", (el) => el.innerText);
-  expect(bannerText).toMatch(
-    "New 1 year Anniversary -- New features available for you Check them out!"
-  );
 
   await page.waitForSelector(".welcome-title");
   const titleText = await page.$eval(".welcome-title", (el) => el.innerText);
