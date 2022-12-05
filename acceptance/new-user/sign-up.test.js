@@ -37,13 +37,15 @@ afterAll(async () => {
 describe("New user navigates in the page", () => {
   test("New user sees a sign up page", async () => {
     await page.goto(HOME_PAGE);
-
+    
     await page.waitForResponse((res) => res.url().endsWith("/users/self"));
-    await page.waitForSelector("button.login-btn-text");
+    
+    const LOGIN_BUTTON_CSS_SELECTOR = "button.btn-login-text";
+    await page.waitForSelector(LOGIN_BUTTON_CSS_SELECTOR);
 
     await Promise.all([
       page.waitForNavigation(),
-      page.click("button.login-btn-text"),
+      page.click(LOGIN_BUTTON_CSS_SELECTOR),
     ]);
 
     const ghUsernameInput = await page.waitForSelector("input#login_field");
