@@ -34,10 +34,11 @@ afterAll(async () => {
 
 describe("Navigation Join page", () => {
   test("Join button test for logged user", async () => {
+
     await page.goto(JOIN)
      
     const join_button = await page.$('.btn-join')
-   
+     
     if(join_button)
     {
         console.log("successful")
@@ -46,8 +47,47 @@ describe("Navigation Join page", () => {
             page.waitForNavigation(), 
             page.click('.btn-join'), 
          ]);
-
+         
          delay(5000)
+        
+        page.on("response", (response) => {
+            if (response.url().endsWith("/users/self")) 
+            {
+              if(response.url().endsWith("/users/self")){ 
+              if(response.status() === 401)
+              {
+                let url = page.url()
+                if(url.endsWith("/join"))
+                {                  
+                  Promise.all([
+                       page.waitForNavigation(),
+                       page.evaluate(`window.confirm = () => true`)
+                  ])
+                  
+                }
+                delay(2000)  
+              }
+              else if(response.status() === 200){
+                const url = page.url()
+                if(url.endsWith("/join"))
+                {
+                  browser.close()
+                }  
+              }
+            }
+            
+            }
+             
+        } 
+    );
+
+    // page.on('dialog', async dialog => { 
+    //            console.log(dialog.message());
+    //            await dialog.accept();
+    //            expect(page.url()).toBe("https://github.com/login/")
+    //     })
+
+     
     }
     else{
         console.log("failure")
