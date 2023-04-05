@@ -20,10 +20,11 @@ const delay = (time) => {
 async function confirmAlerts(){
         page.on('dialog', async dialog => {
                await dialog.accept();
+               
                delay(2000)
-
                await page.waitForNavigation()
-               delay(2000)
+
+               delay(4000)
                await browser.close()
         })
 }
@@ -31,10 +32,8 @@ async function confirmAlerts(){
 async function checkResponse(){
  page.on("response", (response) => {
             
-        if(response.url().endsWith("/users/self")){
-          let url = page.url()
-          if(url.endsWith("/join"))
-              { 
+        if(response.url().endsWith("/users/self") && page.url().endsWith('/join')){
+        
               switch (response.status()) {
 	           	case 401:
 			            delay(2000);
@@ -45,7 +44,6 @@ async function checkResponse(){
 			         break;
 	          }
           }
-   }
  })
 }
  
