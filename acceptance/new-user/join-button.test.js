@@ -9,11 +9,25 @@ const {signupPageTitle} = require("../../constants/pageTitles")
 
 let browser, page;
 
+
+/* time delay */
 const delay = (time) => {
   return new Promise((res) => {
     setTimeout(res, time);
   });
 };
+
+/* confirm alerts */
+async function confirmAlerts(){
+        page.on('dialog', async dialog => {
+               await dialog.accept();
+               delay(2000)
+
+               await page.waitForNavigation()
+               delay(2000)
+               await browser.close()
+        })
+}
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
@@ -27,30 +41,19 @@ beforeAll(async () => {
   return page;
 });
 
-afterAll(async () => {
-  await browser.close();
-});
-
-
-describe("Navigation Join page", () => {
-  test("Join button test for logged user", async () => {
+describe("Navigation of Join button with logged user and logged out user", () => {
+  test("Join button test for user", async () => {
 
     await page.goto(JOIN)
      
-    const join_button = await page.$('.btn-join')
-     
-    if(join_button)
-    {
-        console.log("successful")
-
-         await Promise.all([
-            page.waitForNavigation(), 
+    await Promise.all([
             page.click('.btn-join'), 
-         ]);
+            page.waitForNavigation() 
+    ]);
          
-         delay(5000)
-        
-        page.on("response", (response) => {
+    delay(5000)
+     
+    page.on("response", (response) => {
             if (response.url().endsWith("/users/self")) 
             {
               if(response.url().endsWith("/users/self")){ 
@@ -58,14 +61,11 @@ describe("Navigation Join page", () => {
               {
                 let url = page.url()
                 if(url.endsWith("/join"))
-                {                  
-                  Promise.all([
-                       page.waitForNavigation(),
-                       page.evaluate(`window.confirm = () => true`)
-                  ])
-                  
-                }
-                delay(2000)  
+                 {
+                       delay(2000)
+                       confirmAlerts()    
+                 }
+                }  
               }
               else if(response.status() === 200){
                 const url = page.url()
@@ -77,20 +77,6 @@ describe("Navigation Join page", () => {
             }
             
             }
-             
-        } 
     );
-
-    // page.on('dialog', async dialog => { 
-    //            console.log(dialog.message());
-    //            await dialog.accept();
-    //            expect(page.url()).toBe("https://github.com/login/")
-    //     })
-
-     
-    }
-    else{
-        console.log("failure")
-    }
   })
 })
