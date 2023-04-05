@@ -3,8 +3,7 @@ const config = require("config");
 
 const URLS = require("../../constants/urls");
 
-const { HOME_PAGE, SIGN_UP_PAGE, MY_HOST ,JOIN } = URLS;
-const {signupPageTitle} = require("../../constants/pageTitles")
+const {JOIN } = URLS;
 
 
 let browser, page;
@@ -31,29 +30,25 @@ async function confirmAlerts(){
 
 async function checkResponse(){
  page.on("response", (response) => {
-            if (response.url().endsWith("/users/self")) 
-            {
-              if(response.url().endsWith("/users/self")){ 
-              if(response.status() === 401)
-              {
-                let url = page.url()
-                if(url.endsWith("/join"))
-                 {
-                       delay(2000)
-                       confirmAlerts()    
-                 }
-                }  
-              }
-              else if(response.status() === 200){
-                const url = page.url()
-                if(url.endsWith("/join"))
-                {
-                  browser.close()
-                }  
-              }
-
-            }});
+            
+        if(response.url().endsWith("/users/self")){
+          let url = page.url()
+          if(url.endsWith("/join"))
+              { 
+              switch (response.status()) {
+	           	case 401:
+			            delay(2000);
+			            confirmAlerts();
+			           break;
+		          case 200:
+			            browser.close();
+			         break;
+	          }
+          }
+   }
+ })
 }
+ 
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
