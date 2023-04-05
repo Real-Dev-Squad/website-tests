@@ -29,6 +29,32 @@ async function confirmAlerts(){
         })
 }
 
+async function checkResponse(){
+ page.on("response", (response) => {
+            if (response.url().endsWith("/users/self")) 
+            {
+              if(response.url().endsWith("/users/self")){ 
+              if(response.status() === 401)
+              {
+                let url = page.url()
+                if(url.endsWith("/join"))
+                 {
+                       delay(2000)
+                       confirmAlerts()    
+                 }
+                }  
+              }
+              else if(response.status() === 200){
+                const url = page.url()
+                if(url.endsWith("/join"))
+                {
+                  browser.close()
+                }  
+              }
+
+            }});
+}
+
 beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: false,
@@ -52,31 +78,6 @@ describe("Navigation of Join button with logged user and logged out user", () =>
     ]);
          
     delay(5000)
-     
-    page.on("response", (response) => {
-            if (response.url().endsWith("/users/self")) 
-            {
-              if(response.url().endsWith("/users/self")){ 
-              if(response.status() === 401)
-              {
-                let url = page.url()
-                if(url.endsWith("/join"))
-                 {
-                       delay(2000)
-                       confirmAlerts()    
-                 }
-                }  
-              }
-              else if(response.status() === 200){
-                const url = page.url()
-                if(url.endsWith("/join"))
-                {
-                  browser.close()
-                }  
-              }
-            }
-            
-            }
-    );
+    await checkResponse()        
   })
 })
