@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const config = require("config");
 
 const URLS = require("../../constants/urls");
 
@@ -30,18 +29,18 @@ async function confirmAlerts(){
 }
 
 async function checkResponse(){
- page.on("response", (response) => {
-            
-        if(response.url().endsWith("/users/self") && page.url().endsWith('/join')){
-        
-              switch (response.status()) {
+ page.on("response", (response) => {            
+    if(response.url().endsWith("/users/self") && page.url().endsWith('/join')){
+        switch (response.status()) {
 	           	case 401:
 			            delay(2000);
 			            confirmAlerts();
-			           break;
+			            break;
 		          case 200:
 			            browser.close();
-			         break;
+			            break;
+              default:
+                   browser.close() 
 	          }
           }
  })
@@ -70,7 +69,7 @@ describe("Navigation of Join button with logged user and logged out user", () =>
             page.waitForNavigation() 
     ]);
          
-    delay(5000)
+    delay(2000)
     await checkResponse()        
   })
 })
