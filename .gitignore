@@ -2,3 +2,5 @@ node_modules
 tmp
 config/local.json
 social-media
+.pnp.*
+.yarn/*
