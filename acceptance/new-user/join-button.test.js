@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 const puppeteer = require("puppeteer");
 
 const URLS = require("../../constants/urls");
@@ -15,30 +17,32 @@ const delay = (time) => {
 
 /* confirm alerts */
 async function confirmAlerts() {
-  page.on("dialog", async (dialog) => {
+  await page.on("dialog", async (dialog) => {
     await dialog.accept();
 
     delay(2000);
     await page.waitForNavigation();
 
-    delay(4000);
+    expect(page.url().match(/login/) !== null).toBeTruthy();
+
     await browser.close();
   });
 }
 
 async function checkResponse() {
-  page.on("response", (response) => {
-    if (
-      response.url().endsWith("/users/self") &&
-      page.url().endsWith("/join")
-    ) {
+  await page.on("response", (response) => {
+    if (response.url().endsWith("/users/self")) {
       switch (response.status()) {
         case 401:
-          delay(2000);
+          // user not logged in
+          expect(response.status()).toBe(401);
+          expect(page.url().endsWith("/join")).toBeTruthy();
           confirmAlerts();
           break;
         case 200:
-          browser.close();
+          // user logged in
+          expect(response.status()).toBe(200);
+          expect(page.url().endsWith("/join")).toBeTruthy();
           break;
         default:
           browser.close();
@@ -49,7 +53,7 @@ async function checkResponse() {
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     slowMo: 0,
   });
 
@@ -63,8 +67,10 @@ describe("Navigation of Join button with logged user and logged out user", () =>
   test("Join button test for user", async () => {
     await page.goto(JOIN);
 
-    await Promise.all([page.click(".btn-join"), page.waitForNavigation()]);
+    await page.click(".btn-join");
 
-    await checkResponse();
+    // delay(2000);
+    await Promise.all([page.waitForNavigation(), checkResponse()]);
+    // await browser.close();
   });
 });
