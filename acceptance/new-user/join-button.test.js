@@ -6,7 +6,6 @@ const { delay } = require("../../constants/utils");
 
 let browser, page;
 
-/* confirm alerts */
 async function confirmAlerts() {
   await page.on("dialog", async (dialog) => {
     await dialog.accept();
