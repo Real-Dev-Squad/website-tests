@@ -1,19 +1,10 @@
 /** @jest-environment jsdom */
-
 const puppeteer = require("puppeteer");
-
 const URLS = require("../../constants/urls");
-
 const { JOIN } = URLS;
+const { delay } = require("../../constants/utils");
 
 let browser, page;
-
-/* time delay */
-const delay = (time) => {
-  return new Promise((res) => {
-    setTimeout(res, time);
-  });
-};
 
 /* confirm alerts */
 async function confirmAlerts() {
@@ -22,13 +13,11 @@ async function confirmAlerts() {
 
     delay(2000);
     await page.waitForNavigation();
-
-    expect(page.url().match(/login/) !== null).toBeTruthy();
-
-    await browser.close();
+    expect(page.url()).toMatch(/login/);
   });
 }
 
+/* check status*/
 async function checkResponse() {
   await page.on("response", (response) => {
     if (response.url().endsWith("/users/self")) {
@@ -54,23 +43,23 @@ async function checkResponse() {
 beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: true,
-    slowMo: 0,
   });
 
   const context = await browser.createIncognitoBrowserContext();
 
   page = await context.newPage();
-  return page;
 });
 
-describe("Navigation of Join button with logged user and logged out user", () => {
+afterAll(async () => {
+  await browser.close();
+});
+
+describe("Navigation of Join button with complete details", () => {
   test("Join button test for user", async () => {
     await page.goto(JOIN);
 
     await page.click(".btn-join");
 
-    // delay(2000);
     await Promise.all([page.waitForNavigation(), checkResponse()]);
-    // await browser.close();
   });
 });

@@ -1,29 +1,22 @@
 /** @jest-environment jsdom */
 const puppeteer = require("puppeteer");
-
 const URLS = require("../../constants/urls");
-
-const { JOIN, MY_HOST } = URLS;
+const { JOIN, MY_HOST, HOME_PAGE } = URLS;
 
 let browser, page;
-
-/* time delay */
-const delay = (time) => {
-  return new Promise((res) => {
-    setTimeout(res, time);
-  });
-};
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: true,
-    slowMo: 0,
   });
 
   const context = await browser.createIncognitoBrowserContext();
 
   page = await context.newPage();
-  return page;
+});
+
+afterAll(async () => {
+  await browser.close();
 });
 
 describe("Navigation of Join with incomplete details", () => {
@@ -55,10 +48,8 @@ describe("Navigation of Join with incomplete details", () => {
     page.on("dialog", async (dialog) => {
       await dialog.accept();
     });
-    delay(4000);
 
-    const val = window.location.href;
-    expect(val).toMatch("/");
-    await browser.close();
+    await page.waitForNavigation();
+    expect(page.url()).toBe(`${HOME_PAGE}/`);
   });
 });
