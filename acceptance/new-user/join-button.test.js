@@ -2,16 +2,18 @@
 const puppeteer = require("puppeteer");
 const URLS = require("../../constants/urls");
 const { JOIN } = URLS;
-const { delay } = require("../../constants/utils");
+const { delay } = require("../../utils/delay");
 
 let browser, page;
 
-async function confirmAlerts() {
-  await page.on("dialog", async (dialog) => {
+function confirmAlerts() {
+  page.on("dialog", async (dialog) => {
     await dialog.accept();
 
     delay(2000);
     await page.waitForNavigation();
+
+    delay(2000);
     expect(page.url()).toMatch(/login/);
   });
 }
@@ -24,13 +26,13 @@ async function checkResponse() {
         case 401:
           // user not logged in
           expect(response.status()).toBe(401);
-          expect(page.url().endsWith("/join")).toBeTruthy();
+          expect(page.url().endsWith("/join"));
           confirmAlerts();
           break;
         case 200:
           // user logged in
           expect(response.status()).toBe(200);
-          expect(page.url().endsWith("/join")).toBeTruthy();
+          expect(page.url().endsWith("/join"));
           break;
         default:
           browser.close();
