@@ -1,5 +1,5 @@
 node_modules
 tmp
 config/local.json
-social-media
+social-media/*
 .yarn*
