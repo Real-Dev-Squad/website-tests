@@ -9,11 +9,7 @@ let browser, page;
 function confirmAlerts() {
   page.on("dialog", async (dialog) => {
     await dialog.accept();
-
-    delay(2000);
     await page.waitForNavigation();
-
-    delay(2000);
     expect(page.url()).toMatch(/login/);
   });
 }
