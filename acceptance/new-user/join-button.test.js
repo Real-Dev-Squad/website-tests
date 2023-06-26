@@ -22,21 +22,9 @@ function confirmAlerts() {
 async function checkResponse() {
   await page.on("response", (response) => {
     if (response.url().endsWith("/users/self")) {
-      switch (response.status()) {
-        case 401:
-          // user not logged in
           expect(response.status()).toBe(401);
           expect(page.url().endsWith("/join"));
           confirmAlerts();
-          break;
-        case 200:
-          // user logged in
-          expect(response.status()).toBe(200);
-          expect(page.url().endsWith("/join"));
-          break;
-        default:
-          browser.close();
-      }
     }
   });
 }
