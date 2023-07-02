@@ -10,7 +10,7 @@ function confirmAlerts() {
   page.on("dialog", async (dialog) => {
     await dialog.accept();
     await page.waitForNavigation();
-    expect(page.url()).toMatch(/login/);
+    expect(page.url()).toMatch('https://github.com/login');
   });
 }
 
@@ -18,6 +18,7 @@ function confirmAlerts() {
 async function checkResponse() {
   await page.on("response", (response) => {
     if (response.url().endsWith("/users/self")) {
+          delay(2000)
           expect(response.status()).toBe(401);
           expect(page.url().endsWith("/join"));
           confirmAlerts();
