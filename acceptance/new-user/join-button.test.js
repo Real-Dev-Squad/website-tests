@@ -39,7 +39,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-describe("Navigation of Join button with complete details", () => {
+describe("Navigation of Join button with not logged In user", () => {
   test("Join button test for user", async () => {
     await page.goto(JOIN);
 
